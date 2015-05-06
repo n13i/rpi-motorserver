@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!--
+参考:
+http://d.hatena.ne.jp/tomo-ono/20110530/1306740692
+https://github.com/kkai/devicemotion-demo/blob/master/nodejsserver/client.js
+-->
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>test</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript">
+var socket = io.connect();
+
+var ax, ay, az, amax;
+
+window.addEventListener('devicemotion', function(e) {
+    ax = e.acceleration.x;
+    ay = e.acceleration.y;
+    az = e.acceleration.z;
+});
+
+setInterval(function() {
+    amax = Math.sqrt(ax*ax + ay*ay + az*az);
+    socket.emit('motion', {max: amax});
+}, 200);
+
+setInterval(function() {
+    socket.emit('keepalive', {});
+}, 2000);
+
+  </script>
+</head>
+<body>
+</body>
+</html>
+
