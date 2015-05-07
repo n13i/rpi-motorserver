@@ -14,10 +14,10 @@
 #include <signal.h>
 #include <wiringPi.h>
 
-#define PIN_FIN (1) // GPIO 18
-#define PIN_RIN (4) // GPIO 23
+#define PIN_FIN (1) // GPIO 18 (Header Pin 12)
+#define PIN_RIN (0) // GPIO 17 (Header Pin 11)
 #define PWM_CLOCK_DIVISOR (8)
-#define PWM_RANGE (64)
+#define PWM_RANGE (100)
 #define RECV_BUF_SIZE (32)
 #define RECV_TIMEOUT (30)
 
@@ -130,15 +130,15 @@ void run()
             }
             else
             {
-                if(pwm_duty >= 40)
+                if(pwm_duty >= 50)
                 {
-                    pwm_duty = 40;
+                    pwm_duty = 50;
                 }
     
                 pinMode(PIN_FIN, PWM_OUTPUT);
                 pwmSetMode(PWM_MODE_MS); // constant freq, variable mark-space time
 
-                // pwm freq = 19200[kHz] / 8[clock] / 64[range] = 37.5[kHz]
+                // pwm freq = 19200[kHz] / 8[clock] / 100[range] = 24[kHz]
                 // (target freq of BD6211F = 20kHz-100kHz)
                 pwmSetClock(PWM_CLOCK_DIVISOR);
                 pwmSetRange(PWM_RANGE);
